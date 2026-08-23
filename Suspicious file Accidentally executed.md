@@ -98,20 +98,4 @@ Check where the binary might have anchored itself before terminating it:
 | **Persistence** | Sysinternals `autoruns.exe` | Unverified publishers, anomalous execution paths in Run keys, Winlogon helpers, and Scheduled Tasks |
 | **Execution History** | Prefetch (`C:\Windows\Prefetch`), Shimcache, Amcache | Proof of execution, execution timestamps, original path of the suspicious file |
 
-
-
-
-
-### The One Exception (Enterprise / SOC Context)
-
-* **Physical Disconnect vs. Logical EDR Isolation:**
-If an enterprise uses an EDR tool (like CrowdStrike Falcon, Microsoft Defender for Endpoint, or SentinelOne), you use the platform's **"Host Isolation"** feature rather than physically pulling the plug.
-* This cuts off all inbound and outbound network traffic to the local network and internet, **except** for an encrypted tunnel directly to the security console.
-* This allows the SOC analyst to perform live remote remediation, pull memory triage images, and run forensic scripts without risking the rest of the environment.
-
-
-* **Live C2 Capture (Advanced DFIR/Threat Hunting):**
-In specialized lab environments or high-tier incident response investigations, analysts occasionally allow brief, monitored network connectivity inside a sandbox to capture live DNS queries, IP addresses, and TLS certificate metadata before isolating.
-
 ---
-
