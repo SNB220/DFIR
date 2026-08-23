@@ -23,12 +23,12 @@ Here is an analysis of your workflow and the industry-standard **Order of Volati
 
 
 2. **Reconnecting to the Internet Too Early:**
-* Connecting back to the network just to run `netstat` introduces major risk. If persistence mechanisms survived, the host will immediately beacon out again or download a secondary stage.
+* Connecting back to the network just to run `netstat` introduces **major risk**. If persistence mechanisms survived, the host will immediately beacon out again or download a secondary stage.
 * `netstat -ano` does not require an active internet connection—it inspects local socket tables and existing connections.
 
 
 3. **Trusting Native Tools on a Potentially Compromised OS:**
-* Advanced malware (rootkits, API hooking) can spoof standard output from Task Manager, `tasklist`, or `netstat`.
+> Advanced malware (rootkits, API hooking) can spoof standard output from Task Manager, `tasklist`, or `netstat`.
 
 
 
