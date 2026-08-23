@@ -1,19 +1,25 @@
-## **If a suspicious or malicious file is accidentally executed, is this a correct initial response: disconnect the system from the internet, investigate running processes and services, identify and stop suspicious activity, check for associated persistence mechanisms, and then analyze network connections and open TCP/UDP ports using tools like `netstat`?**
+## **If a suspicious or malicious file is accidentally executed, is this a correct initial response:** 
+* **Disconnect the system from the internet,** 
+* **Investigate running processes and services,** 
+* **Identify and stop suspicious activity,** 
+* **Check for associated persistence mechanisms, and then** 
+* **Analyze network connections and open TCP/UDP ports using tools like `netstat`?**
 
 **“Is this approach correct, and what steps should I add or change?”**
 ## NO!, but
-* specifically isolating the host from the network immediately to prevent command-and-control (C2) callback or lateral movement.
-* **However**, the exact order of steps and the act of killing processes before capturing volatile data has some critical gaps from a digital forensics and incident response (DFIR) perspective.
+* Specifically isolating the host from the network immediately to prevent **command-and-control (C2) callback** or **lateral movement**.
+* **However**, the exact order of steps and the act of **killing processes before capturing** **volatile data** has *some critical gaps from a digital forensics and incident response (DFIR) perspective*.
 
 Here is an analysis of your workflow and the industry-standard **Order of Volatility** approach.
 
 ---
 
-### Key Issues in Your Current Flow
+### Key Issues in this Current Flow
 
 1. **Premature Process Termination (Killing the process too early):**
-* If you kill the process before inspecting memory, you destroy volatile evidence (injected code, unpacked payloads in RAM, decrypted C2 strings, and active socket handles).
-* Malware often uses watchdog processes or persistence mechanisms (scheduled tasks, run keys) that immediately respawn the killed process.
+> If you kill the process before inspecting memory, you destroy volatile evidence (injected code, unpacked payloads in RAM, decrypted C2 strings, and active socket handles).
+
+> Malware often uses watchdog processes or persistence mechanisms (scheduled tasks, run keys) that immediately respawn the killed process.
 
 
 2. **Reconnecting to the Internet Too Early:**
@@ -38,7 +44,10 @@ Here is an analysis of your workflow and the industry-standard **Order of Volati
 
 #### 1. Network Isolation (Containment)
 
-* Disconnect Ethernet / Wi-Fi immediately.
+The moment a user runs an untrusted payload, cutting the network connection (pulling the Ethernet cable, turning off Wi-Fi, or isolating via an EDR agent) immediately halts two major threats:
+
+* **Data Exfiltration & C2 Callbacks**: Stops the malware from phoning home to download secondary payloads, encrypt keys (ransomware), or exfiltrate sensitive files.
+* **Lateral Movement**: Prevents worm-like spread or network reconnaissance against other subnets and devices on the local network.
 * Do **not** reboot or shut down the machine (shutting down wipes RAM).
 
 #### 2. Live Response & Volatile Evidence Collection
